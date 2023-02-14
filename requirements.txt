@@ -1,0 +1,5 @@
+kubernetes
+google-cloud-storage
+python-dotenv
+google-cloud-pubsub
+typing
