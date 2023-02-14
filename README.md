@@ -1,12 +1,12 @@
 # Picasso
 
-Create NFTs from Blender files using Blend My NFT addon and Kubernetes.
+Create NFTs from Blender files using Blend My NFT addon and Kubernetes. This project was inspirated by the Gitlab Runner where you can create CI/CD jobs on demand.
 
+I used this project to render 12k NFTs (2000x) in about 3 hours using 64 T4 GPUs in GCP.
 ## Prerequisites
 - Kubernetes
 - Python 3
 - Blender 3.0
-
 
 ## Installing Kubernetes Resources
 
@@ -65,6 +65,13 @@ Note: if you have a GPU, you need to install the [Nvidia Docker](#resources) and
 docker run -it --gpus all -v $(pwd)/assets:/nft/assets printmaker assets/<asset name> <create-dna | generate-nfts>
 ```
 
+## Known issues
+
+There are some optmiizations that can be done to improve the performance of the script. The following are some of the issues that I found:
+
+- Currently we have a job that is monitoring the status of the Kubernetes Jobs. This job may not be necessary if we can find a way to get the status of the Kubernetes Jobs from the Python script. Maybe we could use Pub/Sub or trigger another job when the Kubernetes Job is completed.
+- The operation `refactor-batches` may not be necessary using the blender, we could just use a python script and rearrange the batches in a more efficient way.
+- The images aren't compressed, we could use a python script to compress the images and save some space in the GCP bucket.
 
 ## Resources
 - [Blender image](https://hub.docker.com/layers/nytimes/blender)
